@@ -1,0 +1,21 @@
+name: "Deploy Image: Whatsapp webhook"
+
+on:
+    workflow_dispatch: 
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker image
+        run: |
+          docker build -t whatsapp-webhook ./deps/services/whatsapp-webhook
+          docker login -u coderookieerick -p ${{ secrets.DOCKER_HUB }}
+          docker tag whatsapp-webhook coderookieerick/whatsapp-webhook:latest
+          docker push coderookieerick/whatsapp-webhook:latest

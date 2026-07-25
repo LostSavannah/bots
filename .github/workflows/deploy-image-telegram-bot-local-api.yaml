@@ -1,0 +1,21 @@
+name: "Deploy Image: Telegram bot local API"
+
+on:
+    workflow_dispatch: 
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker image
+        run: |
+          docker build -t telegram-bot-api ./deps/services/telegram-bot-api
+          docker login -u coderookieerick -p ${{ secrets.DOCKER_HUB }}
+          docker tag telegram-bot-api coderookieerick/telegram-bot-api:latest
+          docker push coderookieerick/telegram-bot-api:latest
