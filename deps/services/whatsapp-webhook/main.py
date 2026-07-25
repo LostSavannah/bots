@@ -34,7 +34,7 @@ class WhatsappApplication:
         hub_challenge: Annotated[str | None, Query(alias="hub.challenge")] = None,
         hub_verify_token: Annotated[str | None, Query(alias="hub.verify_token")] = None
     ):
-        if hub_verify_token != TOKEN or hub_mode != "challenge":
+        if hub_verify_token != TOKEN or hub_mode != "subscribe":
             return Response("UNAUTHORIZED", 401)
         return Response(hub_challenge, 200)
 
